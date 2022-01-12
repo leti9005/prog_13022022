@@ -8,6 +8,11 @@ typedef struct item
         this->value = value;
     }
 
+    char get_char()
+    {
+        return 'A' + (char) value;
+    }
+
 } item;
 
 item* convertSetToList(bool* bitSet);

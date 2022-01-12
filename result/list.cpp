@@ -46,7 +46,7 @@ void listPrint(item* head)
 {
     while (head)
     {
-        cout << head->value << " ";
+        cout << head->get_char() << " ";
         head = head->next;
     }
 
