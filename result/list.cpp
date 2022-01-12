@@ -14,7 +14,7 @@ item* listCalculate(item* A, item* B, item* C, item* D)
         // Все из A, не являющиеся общими для B и C
         if (!(listContains(B, A->value) && listContains(C, A->value)))
         {
-            E = listPush(E, new item(A->value));
+            E = listPushIfNotContains(E, new item(A->value));
         }
 
         A = A->next;
@@ -23,7 +23,7 @@ item* listCalculate(item* A, item* B, item* C, item* D)
     // все буквы из D
     while (D)
     {
-        E = listPush(E, new item(D->value));
+        E = listPushIfNotContains(E, new item(D->value));
         D = D->next;
     }
 
@@ -55,6 +55,15 @@ void listPrint(item* head)
 
 item* listPush(item* head, item* element)
 {
-    if (head) element->next = head;
+    element->next = head;
     return element;
+}
+
+item* listPushIfNotContains(item* head, item* element)
+{
+    if (head && listContains(head, element->value)) {
+        return head;
+    }
+
+    return listPush(head, element);
 }

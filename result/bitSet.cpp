@@ -33,7 +33,7 @@ item* convertSetToList(bool* bitSet)
 
     for (int i = 0; i < 10; ++i)
         if (bitSet[i])
-            list = listPush(list, new item(i));
+            list = listPushIfNotContains(list, new item(i));
 
     return list;
 }

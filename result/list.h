@@ -13,6 +13,7 @@ typedef struct item
 item* convertSetToList(bool* bitSet);
 
 item* listPush(item* head, item* element);
+item* listPushIfNotContains(item* head, item* element);
 void listPrint(item* head);
 
 bool listContains(item* list, int value);
