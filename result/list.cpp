@@ -3,25 +3,24 @@
 
 using namespace std;
 
-// Множество, содержащее все цифры множества A, за исключением цифр из B и C, а также все цифры из D
+// Множество, содержащее буквы, имеющиеся во множестве A,
+// но не являющиеся общими для B и C, и все буквы из D
 item* listCalculate(item* A, item* B, item* C, item* D)
 {
     item* E = nullptr;
 
     while (A)
     {
-        // за исключением цифр из B и C
-        if (
-            !listContains(B, A->value)
-            && !listContains(C, A->value)
-        ) {
+        // Все из A, не являющиеся общими для B и C
+        if (!(listContains(B, A->value) && listContains(C, A->value)))
+        {
             E = listPush(E, new item(A->value));
         }
 
         A = A->next;
     }
 
-    // также все цифры из D
+    // все буквы из D
     while (D)
     {
         E = listPush(E, new item(D->value));
