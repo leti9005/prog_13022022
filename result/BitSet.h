@@ -30,45 +30,39 @@ public:
         return new BitSet(bitSet);
     }
 
-    // BitSet operator~() const
-    // {
-    //     BitSet C;
-    //     for (char c = 'A'; c <= 'Z'; ++c)
-    //     { // Цикл по универсуму
-    //         bool f = true;
-    //         for (int j = 0; j < n; ++j)
-    //             if (c == A[j])
-    //             {
-    //                 f = false;
-    //                 break;
-    //             }
-    //         if (f)
-    //             C.A[C.n++] = c;
-    //     }
-    //     C.A[C->n] = 0;
-    //     return std::move(C);
-    // }
+    BitSet operator~() const
+    {
+        BitSet c(this->_bitSet);
 
-    // BitSet& operator|=(const BitSet& B)
-    // {
-    //     for (int i = 0; i < B.n; ++i)
-    //     {
-    //         bool f = true;
-    //         for (int j = 0; j < n; ++j)
-    //             if (B.A[i] == A[j])
-    //                 f = false;
-    //         if (f)
-    //             A[n++] = B.A[i];
-    //     }
-    //     A[n] = 0;
-    //     return *this;
-    // }
+        for (int i = 0; i < 26; i++)
+        {
+            c._bitSet[i] = !this->_bitSet[i];
+        }
 
-    // BitSet operator|(const BitSet& B) const
-    // {
-    //     BitSet C(*this);
-    //     return std::move(C |= B);
-    // }
+        return c;
+    }
 
-    ~BitSet() { delete[] this->_bitSet; }
+    BitSet operator|(const BitSet& b) const
+    {
+        BitSet c(this->_bitSet);
+
+        for (int i = 0; i < 26; i++)
+        {
+            c._bitSet[i] = this->_bitSet[i] || b._bitSet[i];
+        }
+
+        return c;
+    }
+
+    BitSet operator&(const BitSet& b) const
+    {
+        BitSet c(this->_bitSet);
+
+        for (int i = 0; i < 26; i++)
+        {
+            c._bitSet[i] = this->_bitSet[i] && b._bitSet[i];
+        }
+
+        return c;
+    }
 };
