@@ -53,4 +53,23 @@ public:
         delete bcIntersection;
         return e;
     }
+
+    unsigned int Calculate(int a, int b, int c, int d)
+    {
+        return a & ~(b & c) | d;
+    }
+
+    BitSet* Calculate(BitSet* a, BitSet* b, BitSet* c, BitSet* d)
+    {
+        auto A = a->GetInternalArray();
+        auto B = b->GetInternalArray();
+        auto C = c->GetInternalArray();
+        auto D = d->GetInternalArray();
+
+        auto E = new bool[26];
+        for (int i = 0; i < 26; ++i)
+            E[i] = (A[i] && !(B[i] && C[i])) || D[i];
+
+        return new BitSet(E);
+    }
 };

@@ -6,7 +6,7 @@
 #include <functional>
 #include <time.h>
 
-#include "bitSet.h"
+#include "BitSet.h"
 #include "LinkedList.h"
 #include "ListNode.h"
 #include "CalculatorService.h"
@@ -23,11 +23,11 @@ int main(int argc, char** argv)
     bitWord[2] = rand(); // Множество C
     bitWord[3] = rand(); // Множество D
 
-    auto bitSet = new bool*[5];
-    for (int i = 0; i < 4; i++) bitSet[i] = convertWordToSet(bitWord[i]);
+    auto bitSets = new BitSet*[5];
+    for (int i = 0; i < 4; i++) bitSets[i] = BitSet::From(bitWord[i]);
 
     auto lists = new LinkedList<int>*[5];
-    for (int i = 0; i < 4; i++) lists[i] = LinkedList<int>::From(bitSet[i]);
+    for (int i = 0; i < 4; i++) lists[i] = LinkedList<int>::From(bitSets[i]->GetInternalArray());
 
     std::function<std::string(const int)> getChar = [](const int i)
     {
@@ -44,55 +44,59 @@ int main(int argc, char** argv)
     auto eList = calc.Calculate(*lists[0], *lists[1], *lists[2], *lists[3]);
     cout << "E: " << eList->ToString(&getChar) << endl;
 
+    {
+        clock_t benchmark_total = 0;
+        for (int i = 0; i < 500000; i++)
+        {
+            clock_t iter_start_at = clock();
 
-    // cout << endl;
+            bitWord[4] = calc.Calculate(bitWord[0], bitWord[1], bitWord[2], bitWord[3]);
 
-    // {
-    //     clock_t benchmark_total = 0;
-    //     for (int i = 0; i < 500000; i++)
-    //     {
-    //         clock_t iter_start_at = clock();
+            benchmark_total += clock() - iter_start_at;
+        }
 
-    //         bitWord[4] = bitWordCalculate(bitWord[0], bitWord[1], bitWord[2], bitWord[3]);
+        cout << "Bit word (500000 iterations): " << benchmark_total << " ticks." << endl;
+    }
 
-    //         benchmark_total += clock() - iter_start_at;
-    //     }
+    {
+        clock_t benchmark_total = 0;
+        for (int i = 0; i < 500000; i++)
+        {
+            delete bitSets[4];
 
-    //     cout << "Bit word (500000 iterations): " << benchmark_total << " ticks." << endl;
-    // }
+            clock_t iter_start_at = clock();
 
-    // {
-    //     clock_t benchmark_total = 0;
-    //     for (int i = 0; i < 500000; i++)
-    //     {
-    //         clock_t iter_start_at = clock();
+            bitSets[4] = calc.Calculate(bitSets[0], bitSets[1], bitSets[2], bitSets[3]);
 
-    //         bitSet[4] = bitSetCalculate(bitSet[0], bitSet[1], bitSet[2], bitSet[3]);
+            benchmark_total += clock() - iter_start_at;
+        }
 
-    //         benchmark_total += clock() - iter_start_at;
-    //     }
+        cout << "Bit array (500000 iterations): " << benchmark_total << " ticks." << endl;
+    }
 
-    //     cout << "Bit array (500000 iterations): " << benchmark_total << " ticks." << endl;
-    // }
+    {
+        clock_t benchmark_total = 0;
+        for (int i = 0; i < 500000; i++)
+        {
+            delete lists[4];
 
-    // {
-    //     clock_t benchmark_total = 0;
-    //     for (int i = 0; i < 500000; i++)
-    //     {
-    //         clock_t iter_start_at = clock();
+            clock_t iter_start_at = clock();
 
-    //         lists[4] = listCalculate(lists[0], lists[1], lists[2], lists[3]);
+            lists[4] = calc.Calculate(*lists[0], *lists[1], *lists[2], *lists[3]);
 
-    //         benchmark_total += clock() - iter_start_at;
-    //     }
+            benchmark_total += clock() - iter_start_at;
+        }
 
-    //     cout << "Linked lists (500000 iterations): " << benchmark_total << " ticks." << endl;
-    // }
+        cout << "Linked lists (500000 iterations): " << benchmark_total << " ticks." << endl;
+    }
 
-    // cout << endl << "Result: " << endl;
-    // bitSetPrint(convertWordToSet(bitWord[4]));
-    // bitSetPrint(bitSet[4]);
-    // listPrint(lists[4]);
+    cout << endl << "Result: " << endl;
+    auto eBitSetFromWord = BitSet::From(bitWord[4]);
+    eBitSetFromWord->Print();
+    delete eBitSetFromWord;
+
+    bitSets[4]->Print();
+    cout << lists[4]->ToString(&getChar) << endl;
 
     return 0;
 }
