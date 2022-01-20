@@ -28,11 +28,11 @@ int main(int argc, char** argv)
     bitWord[2] = rand(); // Множество C
     bitWord[3] = rand(); // Множество D
 
-    auto bitSets = new BitSet*[4];
+    BitSet bitSets[4];
     for (int i = 0; i < 4; i++) bitSets[i] = BitSet::From(bitWord[i]);
 
     auto lists = new LinkedList<int>*[4];
-    for (int i = 0; i < 4; i++) lists[i] = LinkedList<int>::From(bitSets[i]->GetInternalArray());
+    for (int i = 0; i < 4; i++) lists[i] = LinkedList<int>::From(bitSets[i].GetInternalArray());
 
     std::function<std::string(const int)> getChar = [](const int i)
     {
@@ -65,7 +65,7 @@ int main(int argc, char** argv)
         {
             clock_t iter_start_at = clock();
 
-            eBitSet = calc.Calculate(*bitSets[0], *bitSets[1], *bitSets[2], *bitSets[3]);
+            eBitSet = calc.Calculate(bitSets[0], bitSets[1], bitSets[2], bitSets[3]);
 
             benchmark_total += clock() - iter_start_at;
         }
@@ -77,6 +77,12 @@ int main(int argc, char** argv)
         clock_t benchmark_total = 0;
         for (int i = 0; i < 500000; i++)
         {
+            if (eList)
+            {
+                eList->Clear();
+                delete eList;
+            }
+
             clock_t iter_start_at = clock();
 
             eList = calc.Calculate(*lists[0], *lists[1], *lists[2], *lists[3]);
@@ -89,8 +95,7 @@ int main(int argc, char** argv)
 
     cout << endl << "Result: " << endl;
     auto eBitSetFromWord = BitSet::From(eWord);
-    eBitSetFromWord->Print();
-    delete eBitSetFromWord;
+    eBitSetFromWord.Print();
 
     eBitSet.Print();
     cout << eList->ToString(&getChar) << endl;

@@ -141,4 +141,16 @@ public:
 
         return list;
     }
+
+    void Clear()
+    {
+        if (!this->_head) return;
+
+        for (auto n = this->_head; n;)
+        {
+            auto t = n->Next;
+            delete n;
+            n = t;
+        }
+    }
 };

@@ -9,7 +9,7 @@ private:
     bool* _bitSet;
 
 public:
-    BitSet(bool* bs) : _bitSet(bs) {}
+    BitSet(bool* bs = nullptr) : _bitSet(bs) {}
 
     void Print()
     {
@@ -20,14 +20,14 @@ public:
 
     bool* GetInternalArray() { return this->_bitSet; }
 
-    static BitSet* From(int bitWord)
+    static BitSet From(int bitWord)
     {
         bool* bitSet = new bool[26];
 
         for (int i = 0; i < 26; i++)
             bitSet[i] = (bitWord >> i) & 1;
 
-        return new BitSet(bitSet);
+        return BitSet(bitSet);
     }
 
     BitSet operator~() const
