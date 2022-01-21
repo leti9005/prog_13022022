@@ -4,9 +4,16 @@ template <typename T>
 struct ListNode
 {
     T Value;
-    ListNode<T>* Next = nullptr;
+    ListNode<T>* Next;
 
-    ListNode()
+    ListNode(T value, ListNode<T>* next = nullptr)
+        : Value(value),
+          Next(next)
     {
+    }
+
+    ~ListNode()
+    {
+        delete this->Next;
     }
 };

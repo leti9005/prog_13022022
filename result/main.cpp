@@ -18,6 +18,9 @@ int main(int argc, char** argv)
     srand(time(nullptr));
     auto calc = CalculatorService();
 
+    // TODO: class CharSet
+    // TODO: реализовать класс BitWord
+
     unsigned int eWord = 0;
     BitSet eBitSet = nullptr;
     LinkedList<int>* eList = nullptr;
@@ -77,11 +80,7 @@ int main(int argc, char** argv)
         clock_t benchmark_total = 0;
         for (int i = 0; i < 500000; i++)
         {
-            if (eList)
-            {
-                eList->Clear();
-                delete eList;
-            }
+            if (eList) delete eList;
 
             clock_t iter_start_at = clock();
 

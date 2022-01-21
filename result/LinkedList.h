@@ -14,8 +14,7 @@ class LinkedList
 
     void Add(T value)
     {
-        auto newNode = new ListNode<T>();
-        newNode->Value = value;
+        auto newNode = new ListNode<T>(value);
 
         if (_head == nullptr)
         {
@@ -140,17 +139,5 @@ public:
         }
 
         return list;
-    }
-
-    void Clear()
-    {
-        if (!this->_head) return;
-
-        for (auto n = this->_head; n;)
-        {
-            auto t = n->Next;
-            delete n;
-            n = t;
-        }
     }
 };

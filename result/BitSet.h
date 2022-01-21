@@ -32,6 +32,7 @@ public:
 
     BitSet operator~() const
     {
+        // TODO: копировать массив, а не передавать bool*.
         BitSet c(this->_bitSet);
 
         for (int i = 0; i < 26; i++)
